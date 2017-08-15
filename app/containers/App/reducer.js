@@ -21,6 +21,7 @@ import {
     LOAD_AUTHORS,
     LOAD_AUTHORS_SUCCESS,
     SAVE_COURSE,
+    DELETE_COURSE
 } from './constants';
 
 // The initial state of the App
@@ -53,7 +54,6 @@ function appReducer(state = initialState, action) {
                 .set('loading', true)
                 .set('error', false);
         case LOAD_COURSES_SUCCESS:
-            console.log("COURSES " + action.courses);
             return state
                 .set('loading', false)
                 .set('courses', action.courses);
@@ -68,6 +68,7 @@ function appReducer(state = initialState, action) {
                 .set('loading', false)
                 .set('currentUser', action.username);
         case LOAD_REPOS_ERROR:
+            console.log(action.error)
             return state
                 .set('error', action.error)
                 .set('loading', false);

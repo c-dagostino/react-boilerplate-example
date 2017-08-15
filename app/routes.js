@@ -51,9 +51,20 @@ export default function createRoutes(store) {
           path: '/courses',
           name: 'courses',
           getComponent(nextState, cb) {
-              import('containers/CoursePage')
-                  .then(loadModule(cb))
-                  .catch(errorLoading);
+              const importModules = Promise.all([
+              import('containers/CoursePage/sagas.js'),
+              import('containers/CoursePage'),
+          ]);
+
+              const renderRoute = loadModule(cb);
+
+              importModules.then(([sagas, component]) => {
+                  injectSagas(sagas.default);
+
+                  renderRoute(component);
+              });
+
+              importModules.catch(errorLoading);
           },
       },
       {
@@ -61,8 +72,7 @@ export default function createRoutes(store) {
           name: 'manageCourse',
           getComponent(nextState, cb) {
               const importModules = Promise.all([
-
-              import('containers/ManageCoursePage/sagas.js'),
+              import('containers/CoursePage/sagas.js'),
               import('containers/ManageCoursePage'),
           ]);
 
@@ -82,8 +92,7 @@ export default function createRoutes(store) {
           name: 'manageCourse',
           getComponent(nextState, cb) {
               const importModules = Promise.all([
-
-              import('containers/ManageCoursePage/sagas.js'),
+              import('containers/CoursePage/sagas.js'),
               import('containers/ManageCoursePage'),
           ]);
 

@@ -2,7 +2,7 @@ import React from 'react';
 import TextInput from '../../components/TextInput/TextInput';
 import SelectInput from '../../components/SelectInput/SelectInput';
 
-const CourseForm =({course, allAuthors, onSave, onChange, saving, errors, savedCourse}) => {
+const CourseForm =({course, allAuthors, onSave, onChange, saving, errors}) => {
     return (
         <form>
             <h1>Manage Course</h1>

@@ -218,4 +218,5 @@ _Pvt_Extensions
 *.zip
 **/.nuget/*
 *.rej
+*.jar
 

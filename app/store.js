@@ -7,8 +7,7 @@ import { fromJS } from 'immutable';
 import { routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 import createReducer from './reducers';
-import {getAuthors} from './containers/App/sagas';
-import {getCourses} from './containers/ManageCoursePage/sagas';
+import {getCourses, getAuthors} from './containers/CoursePage/sagas';
 
 
 const sagaMiddleware = createSagaMiddleware();
@@ -59,8 +58,8 @@ export default function
     });
   }
 
-  sagaMiddleware.run(getCourses);
   sagaMiddleware.run(getAuthors);
+  sagaMiddleware.run(getCourses);
 
 
   return store;

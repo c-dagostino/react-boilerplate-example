@@ -4,12 +4,12 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as courseActions from '../App/actions';
 import CourseList from './CourseList';
 import {browserHistory} from 'react-router';
-import { makeSelectCourses, makeSelectLoading } from 'containers/App/selectors';
-import { createStructuredSelector } from 'reselect';
+import {makeSelectCourses, makeSelectLoading, makeSelectAuthors} from 'containers/App/selectors';
 import LoadingIndicator from '../../components/LoadingIndicator/index';
+import * as courseActions from '../App/actions';
+import toastr from 'toastr';
 
 //The five major items of a Container component
 //1. Constructor - initialize state and call bind functions
@@ -20,9 +20,10 @@ import LoadingIndicator from '../../components/LoadingIndicator/index';
 
 
 class CoursesPage extends React.PureComponent {
-    constructor(props,context) {
+    constructor(props, context) {
         super(props, context);
         this.redirectToAddCoursePage = this.redirectToAddCoursePage.bind(this);
+        this.deleteCourse = this.deleteCourse.bind(this);
     }
 
 
@@ -31,8 +32,7 @@ class CoursesPage extends React.PureComponent {
         this.props.actions.loadCourses();
     }
 
-    courseRow(course,index)
-    {
+    courseRow(course, index) {
         return <div key={index}>{course.title}</div>;
     }
 
@@ -40,36 +40,46 @@ class CoursesPage extends React.PureComponent {
         browserHistory.push('/manageCourse');
     }
 
+    deleteCourse(event) {
+        // event.preventDefault();
+        if (confirm("Delete this Course?"))
+        {
+            let courseId = event.target.name;
+            this.props.actions.deleteCourse(courseId);
+        }
+
+    }
+
     render() {
         //destructure to limit the use of this.props
 
 
-
         const {courses, loading} = this.props;
 
-        if (loading)
-        {
-            return (<div><h1>Courses</h1><div><LoadingIndicator/></div></div>);
+        if (loading) {
+            return (<div><h1>Courses</h1>
+                <div><LoadingIndicator/></div>
+            </div>);
         }
 
         let courseList = null;
         if (courses) {
-            courseList = <CourseList courses={courses}/>
+            courseList = <CourseList courses={courses} onDelete={this.deleteCourse}/>
         }
-            return (
-                <div>
-                    <h1>Courses</h1>
-                    <input type="submit"
-                           value="Add Course"
-                           className="btn btn-primary"
-                           onClick={this.redirectToAddCoursePage}
-                    />
+        return (
+            <div>
+                <h1>Courses</h1>
+                <input type="submit"
+                       value="Add Course"
+                       className="btn btn-primary"
+                       onClick={this.redirectToAddCoursePage}
+                />
 
-                    {courseList}
+                {courseList}
 
 
-                </div>
-            );
+            </div>
+        );
 
     }
 }
@@ -85,10 +95,40 @@ CoursesPage.propTypes = {
 };
 
 
-const mapStateToProps = createStructuredSelector({
-    courses: makeSelectCourses(),
-    loading: makeSelectLoading(),
-});
+
+function mergeAuthorNameIntoCourses(courses, authors) {
+
+    return courses.map(course => {
+        const author = authors.filter(author => author.id == course.authorId)[0];
+        return {
+            id: course.id,
+            watchHref: course.watchHref,
+            title: course.title,
+            authorId: course.authorId,
+            authorName: author.firstName + ' ' + author.lastName,
+            length: course.length,
+            category: course.category
+    };
+    });
+
+
+}
+
+function mapStateToProps(state, ownProps) {
+
+    const selectAuthors = makeSelectAuthors();
+    const selectCourses = makeSelectCourses();
+    const selectLoading = makeSelectLoading();
+
+    let updatedCourses = mergeAuthorNameIntoCourses(selectCourses(state, ownProps), selectAuthors(state, ownProps));
+
+    return {
+        courses: updatedCourses,
+        loading: selectLoading(state, ownProps),
+
+    }
+
+};
 
 //what actions are available in our component
 //define createCourse that takes course
@@ -99,7 +139,7 @@ const mapStateToProps = createStructuredSelector({
 // }
 
 //bindActionCreators will bind all actions defined in courseActions
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(courseActions, dispatch)
     };

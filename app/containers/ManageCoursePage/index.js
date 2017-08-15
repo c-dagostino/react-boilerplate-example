@@ -69,7 +69,6 @@ export class ManageCoursePage extends React.PureComponent {
 
     saveCourse(event) {
         event.preventDefault();
-
         if (!this.courseFormIsValid()) {
             return;
         }
@@ -137,9 +136,9 @@ function mapStateToProps(state, ownProps) {
     const courseId = ownProps.params.id; //from the path defined in routes '/course/:id'
     const selectAuthors = makeSelectAuthors();
     const courseSaved = makeSelectSavedCourse();
-    let course = {id: '', watchHref: '', title: '', authorId: '', length: '', category: ''};
-    let global = state.get('global');
-    let courses = global.get('courses');
+    let course = {id: "0", watchHref: '', title: '', authorId: '', length: '', category: ''};
+
+    let courses = makeSelectCourses();
     if (courseId && courses.length > 0) {
         course = getCourseById(courses, courseId);
     }

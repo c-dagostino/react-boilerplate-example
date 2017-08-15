@@ -22,9 +22,13 @@ import {
     LOAD_COURSES,
     LOAD_COURSES_SUCCESS,
     SAVE_COURSE,
-    LOAD_AUTHORS
+    LOAD_AUTHORS,
+    DELETE_COURSE
 } from './constants';
 
+export function deleteCourse(courseId) {
+    return {type: DELETE_COURSE, courseId};
+}
 
 export function loadCourses() {
     return {type: LOAD_COURSES};
@@ -33,26 +37,15 @@ export function loadCourses() {
 export function loadCoursesSuccess(courses) {
     return {type: LOAD_COURSES_SUCCESS, courses};}
 
-    /**
-     * Load the repositories, this action starts the request saga
-     *
-     * @return {object} An action object with a type of LOAD_REPOS
-     */
-    export function loadRepos() {
+
+export function loadRepos() {
         return {
             type: LOAD_REPOS,
         };
     }
 
-    /**
-     * Dispatched when the repositories are loaded by the request saga
-     *
-     * @param  {array} repos The repository data
-     * @param  {string} username The current username
-     *
-     * @return {object}      An action object with a type of LOAD_REPOS_SUCCESS passing the repos
-     */
-    export function reposLoaded(repos, username) {
+
+export function reposLoaded(repos, username) {
         return {
             type: LOAD_REPOS_SUCCESS,
             repos,
@@ -66,28 +59,15 @@ export function loadAuthors() {
     };
 }
 
-    /**
-     * Dispatched when loading the repositories fails
-     *
-     * @param  {object} error The error
-     *
-     * @return {object}       An action object with a type of LOAD_REPOS_ERROR passing the error
-     */
-    export function repoLoadingError(error) {
+export function repoLoadingError(error) {
         return {
             type: LOAD_REPOS_ERROR,
             error,
         };
     }
 
-/**
- * Dispatched when loading the repositories fails
- *
- * @param  {object} error The error
- *
- * @return {object}       An action object with a type of LOAD_REPOS_ERROR passing the error
- */
 export function saveCourse(course) {
+
     return {
         type: SAVE_COURSE,
         course,

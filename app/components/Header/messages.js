@@ -18,4 +18,12 @@ export default defineMessages({
         id: 'boilerplate.components.Header.Courses',
         defaultMessage: 'Courses',
     },
+    coursesGrid: {
+        id: 'boilerplate.components.Header.CoursesGrid',
+        defaultMessage: 'Courses Grid',
+    },
+    customPager: {
+        id: 'boilerplate.components.Header.CustomPager',
+        defaultMessage: 'Custom Paging',
+    },
 });

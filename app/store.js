@@ -8,6 +8,7 @@ import { routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 import createReducer from './reducers';
 import {getCourses, getAuthors} from './containers/CoursePage/sagas';
+import thunk from 'redux-thunk';
 
 
 const sagaMiddleware = createSagaMiddleware();
@@ -18,8 +19,10 @@ export default function
   // 1. sagaMiddleware: Makes redux-sagas.js work
   // 2. routerMiddleware: Syncs the location/URL path to the state
   const middlewares = [
+      thunk,
     sagaMiddleware,
     routerMiddleware(history),
+
   ];
 
   const enhancers = [

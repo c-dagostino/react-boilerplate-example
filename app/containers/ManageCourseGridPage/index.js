@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import { makeSelectAuthors, makeSelectCourses, makeSelectSavedCourse } from 'containers/App/selectors';
 import CourseForm from './CourseForm';
+import toastr from 'toastr'
 import * as actionCreators from '../App/actions';
 
 
@@ -11,7 +12,12 @@ export class ManageCoursePage extends React.PureComponent {
     constructor(props, context) {
         super(props, context);
 
-        this.sta
+        this.state = {
+            course: Object.assign({}, this.props.course),
+            errors: {},
+            saving: false,
+            savedCourse: false
+        };
 
         //bind updateCourseState to the components this
         this.updateCourseState = this.updateCourseState.bind(this);
@@ -42,8 +48,13 @@ export class ManageCoursePage extends React.PureComponent {
     }
 
     redirect() {
+
         this.setState({saving: false});
-        this.context.router.push('/courses');
+        //alert("course saved");
+
+        toastr.success('Course Saved!');
+
+        this.context.router.push('/coursesGrid');
     }
 
     courseFormIsValid() {
@@ -61,6 +72,7 @@ export class ManageCoursePage extends React.PureComponent {
 
     saveCourse(event) {
         event.preventDefault();
+
         if (!this.courseFormIsValid()) {
             return;
         }
@@ -68,12 +80,12 @@ export class ManageCoursePage extends React.PureComponent {
         this.setState({saving: true});
         //use .then to wait until action is complete before redirecting
 
-        // this.props.actions.saveCourse(this.state.course)
-        //     .then(() => this.redirect())
-        //     .catch(error => {
-        //         toastr.error(error);
-        //     });
-        this.props.actions.saveCourse(this.state.course);
+        this.props.actions.saveCourseThunk(this.state.course)
+            .then(() => this.redirect())
+            .catch(error => {
+                toastr.error(error);
+            });
+        //this.props.actions.saveCourse(this.state.course);
     }
 
     render() {
@@ -109,7 +121,7 @@ ManageCoursePage.contextTypes = {
 
 function getCourseById(courses, id) {
 
-
+    console.log("COURSES " + courses);
     const course = courses.filter(course => course.id == id);
 
     if (course.length > 0) return course[0];

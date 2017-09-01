@@ -8,6 +8,8 @@ import post from '../../utils/post';
 import deleteRequest from '../../utils/delete';
 import {fromJS} from 'immutable';
 
+
+
 export function* deleteCourseRequest(action) {
     try {
         const courseId = action.courseId;
@@ -80,5 +82,5 @@ function* deleteCourse(action) {
 export default [
     fetchCourses,
     fetchAuthors,
-    deleteCourse
+    deleteCourse,
 ];

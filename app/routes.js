@@ -39,13 +39,23 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
-      path: '/features',
-      name: 'features',
-      getComponent(nextState, cb) {
-        import('containers/FeaturePage')
-          .then(loadModule(cb))
-          .catch(errorLoading);
+          path: '/features',
+          name: 'features',
+          getComponent(nextState, cb) {
+              import
+              ('containers/FeaturePage')
+                  .then(loadModule(cb))
+                  .catch(errorLoading);
+          },
       },
+      {
+          path: '/customPager',
+          name: 'customPager',
+          getComponent(nextState, cb) {
+              import('containers/CustomPager')
+                  .then(loadModule(cb))
+                  .catch(errorLoading);
+          },
     },
       {
           path: '/courses',
@@ -68,11 +78,32 @@ export default function createRoutes(store) {
           },
       },
       {
+          path: '/coursesGrid',
+          name: 'coursesGrid',
+          getComponent(nextState, cb) {
+              const importModules = Promise.all([
+              import('containers/CourseGridPage/sagas.js'),
+              import('containers/CourseGridPage'),
+          ]);
+
+              const renderRoute = loadModule(cb);
+
+              importModules.then(([sagas, component]) => {
+                  injectSagas(sagas.default);
+
+                  renderRoute(component);
+              });
+
+              importModules.catch(errorLoading);
+          },
+      },
+
+      {
           path: '/manageCourse',
           name: 'manageCourse',
           getComponent(nextState, cb) {
               const importModules = Promise.all([
-              import('containers/CoursePage/sagas.js'),
+              import('containers/ManageCoursePage/sagas.js'),
               import('containers/ManageCoursePage'),
           ]);
 
@@ -92,7 +123,7 @@ export default function createRoutes(store) {
           name: 'manageCourse',
           getComponent(nextState, cb) {
               const importModules = Promise.all([
-              import('containers/CoursePage/sagas.js'),
+              import('containers/ManageCoursePage/sagas.js'),
               import('containers/ManageCoursePage'),
           ]);
 
@@ -107,6 +138,47 @@ export default function createRoutes(store) {
               importModules.catch(errorLoading);
           },
       },
+      {
+          path: '/manageCourseGrid',
+          name: 'manageCourseGrid',
+          getComponent(nextState, cb) {
+              const importModules = Promise.all([
+              import('containers/CourseGridPage/sagas.js'),
+              import('containers/ManageCourseGridPage'),
+          ]);
+
+              const renderRoute = loadModule(cb);
+
+              importModules.then(([sagas, component]) => {
+                  injectSagas(sagas.default);
+
+                  renderRoute(component);
+              });
+
+              importModules.catch(errorLoading);
+          },
+      },
+      {
+          path: '/manageCourseGrid/:id',
+          name: 'manageCourseGrid',
+          getComponent(nextState, cb) {
+              const importModules = Promise.all([
+              import('containers/CourseGridPage/sagas.js'),
+              import('containers/ManageCourseGridPage'),
+          ]);
+
+              const renderRoute = loadModule(cb);
+
+              importModules.then(([sagas, component]) => {
+                  injectSagas(sagas.default);
+
+                  renderRoute(component);
+              });
+
+              importModules.catch(errorLoading);
+          },
+      },
+
       {
       path: '*',
       name: 'notfound',

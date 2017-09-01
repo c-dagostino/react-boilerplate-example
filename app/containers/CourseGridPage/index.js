@@ -4,11 +4,12 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import CourseList from './CourseList';
 import {browserHistory} from 'react-router';
 import {makeSelectCourses, makeSelectLoading, makeSelectAuthors} from 'containers/App/selectors';
 import LoadingIndicator from '../../components/LoadingIndicator/index';
 import * as courseActions from '../App/actions';
+import Griddle, {plugins} from 'griddle-react';
+
 
 //The five major items of a Container component
 //1. Constructor - initialize state and call bind functions
@@ -26,8 +27,7 @@ class CoursesPage extends React.PureComponent {
     }
 
 
-    componentDidMount()
-    {
+    componentDidMount() {
         this.props.actions.loadCourses();
     }
 
@@ -36,13 +36,12 @@ class CoursesPage extends React.PureComponent {
     }
 
     redirectToAddCoursePage() {
-        browserHistory.push('/manageCourse');
+        browserHistory.push('/manageCourseGrid');
     }
 
     deleteCourse(event) {
         // event.preventDefault();
-        if (confirm("Delete this Course?"))
-        {
+        if (confirm("Delete this Course?")) {
             let courseId = event.target.name;
             this.props.actions.deleteCourse(courseId);
         }
@@ -61,10 +60,7 @@ class CoursesPage extends React.PureComponent {
             </div>);
         }
 
-        let courseList = null;
-        if (courses) {
-            courseList = <CourseList courses={courses} onDelete={this.deleteCourse}/>
-        }
+
         return (
             <div>
                 <h1>Courses</h1>
@@ -73,11 +69,11 @@ class CoursesPage extends React.PureComponent {
                        className="btn btn-primary"
                        onClick={this.redirectToAddCoursePage}
                 />
-
-                {courseList}
-
-
+                <br /><br/>
+                <Griddle results={courses} tableClassName="table" showFilter={true}
+                         showSettings={true} columns={["title", "authorName", "length", "category"]}/>
             </div>
+
         );
 
     }
@@ -94,7 +90,6 @@ CoursesPage.propTypes = {
 };
 
 
-
 function mergeAuthorNameIntoCourses(courses, authors) {
 
     return courses.map(course => {
@@ -107,7 +102,7 @@ function mergeAuthorNameIntoCourses(courses, authors) {
             authorName: author.firstName + ' ' + author.lastName,
             length: course.length,
             category: course.category
-    };
+        };
     });
 
 

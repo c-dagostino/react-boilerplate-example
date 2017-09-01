@@ -18,6 +18,8 @@ import FontFaceObserver from 'fontfaceobserver';
 import { useScroll } from 'react-router-scroll';
 import 'sanitize.css/sanitize.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import '../node_modules/react-redux-grid/ExampleGridContainer.css'
+
 
 // Import root app
 import App from 'containers/App';
@@ -131,3 +133,4 @@ if (process.env.NODE_ENV === 'production') {
   require('offline-plugin/runtime').install(); // eslint-disable-line global-require
 }
 
+export default store;

@@ -14,7 +14,7 @@
  *        return { type: YOUR_ACTION_CONSTANT, var: var }
  *    }
  */
-
+import post from '../../utils/post';
 import {
     LOAD_REPOS,
     LOAD_REPOS_SUCCESS,
@@ -23,7 +23,8 @@ import {
     LOAD_COURSES_SUCCESS,
     SAVE_COURSE,
     LOAD_AUTHORS,
-    DELETE_COURSE
+    DELETE_COURSE,
+    UPSERT_COURSE_SUCCESS
 } from './constants';
 
 export function deleteCourse(courseId) {
@@ -35,23 +36,24 @@ export function loadCourses() {
 }
 
 export function loadCoursesSuccess(courses) {
-    return {type: LOAD_COURSES_SUCCESS, courses};}
+    return {type: LOAD_COURSES_SUCCESS, courses};
+}
 
 
 export function loadRepos() {
-        return {
-            type: LOAD_REPOS,
-        };
-    }
+    return {
+        type: LOAD_REPOS,
+    };
+}
 
 
 export function reposLoaded(repos, username) {
-        return {
-            type: LOAD_REPOS_SUCCESS,
-            repos,
-            username,
-        };
-    }
+    return {
+        type: LOAD_REPOS_SUCCESS,
+        repos,
+        username,
+    };
+}
 
 export function loadAuthors() {
     return {
@@ -60,11 +62,11 @@ export function loadAuthors() {
 }
 
 export function repoLoadingError(error) {
-        return {
-            type: LOAD_REPOS_ERROR,
-            error,
-        };
-    }
+    return {
+        type: LOAD_REPOS_ERROR,
+        error,
+    };
+}
 
 export function saveCourse(course) {
 
@@ -73,3 +75,39 @@ export function saveCourse(course) {
         course,
     };
 }
+
+export function upsertCourseSuccess(course) {
+    return {type: UPSERT_COURSE_SUCCESS, course};
+}
+
+
+function saveCourseAPI(course) {
+
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            // Simulate server-side validation
+            const minCourseTitleLength = 1;
+            if (course.title.length < minCourseTitleLength) {
+                reject(`Title must be at least ${minCourseTitleLength} characters.`);
+            }
+
+            post('http://localhost:8080/course', course);
+
+            resolve(course);
+        }, 1000);
+    });
+}
+
+export function saveCourseThunk(course) {
+    return function (dispatch, getState) {
+
+        return saveCourseAPI(course).then(savedCourse => {
+            dispatch(upsertCourseSuccess(savedCourse));
+        }).catch(err => {
+            dispatch(repoLoadingError(err));
+            throw err;
+        });
+    };
+}
+
+

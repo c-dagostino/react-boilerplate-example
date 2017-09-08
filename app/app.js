@@ -19,7 +19,7 @@ import { useScroll } from 'react-router-scroll';
 import 'sanitize.css/sanitize.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/react-redux-grid/ExampleGridContainer.css'
-
+import '../node_modules/toastr/build/toastr.min.css';
 
 // Import root app
 import App from 'containers/App';

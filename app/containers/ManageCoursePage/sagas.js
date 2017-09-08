@@ -21,8 +21,8 @@ export function* upsertCourse(action) {
 
 function* saveCourse(action) {
     const watcher = yield takeLatest(SAVE_COURSE, upsertCourse);
-    // yield take(LOCATION_CHANGE);
-    // yield cancel(watcher);
+    yield take(LOCATION_CHANGE);
+    yield cancel(watcher);
 }
 
 

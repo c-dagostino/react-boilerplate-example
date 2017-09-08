@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Actions } from 'react-redux-grid';
 
 
-export const Pager = ({ api, gridData, current, store  }) => {
+export const Pager = ({ api, gridData, pageSize, current, store  }) => {
 
     // const state = {...store};
     // const test = state.getState();
@@ -31,7 +31,7 @@ export const Pager = ({ api, gridData, current, store  }) => {
             Actions.PagerActions
                 .setPageIndexAsync({
                     pageIndex: parseInt(index) - 1,
-                    pageSize: 5,
+                    pageSize: pageSize,
                     dataSource: api,
                     stateKey: 'custom-pager'
                 })

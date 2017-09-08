@@ -27,6 +27,7 @@ export const CustomPager = ({ store }) => {
                     <Pager
                         api={Api}
                         store={store}
+                        pageSize="5"
                     />
                 )
             }
@@ -36,13 +37,7 @@ export const CustomPager = ({ store }) => {
         stateKey: 'custom-pager'
     };
 
-    // const simpleData = {
-    //     columns,
-    //     data,
-    //     pageSize,
-    //     plugins: {},
-    //     stateKey: 'simple'
-    // };
+
 
     return <Grid { ...customFooter } />;
 };

@@ -25,7 +25,6 @@ class CoursesPage extends React.PureComponent {
         this.deleteCourse = this.deleteCourse.bind(this);
     }
 
-
     componentDidMount()
     {
         this.props.actions.loadCourses();

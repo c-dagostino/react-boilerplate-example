@@ -11,7 +11,12 @@ export class ManageCoursePage extends React.PureComponent {
     constructor(props, context) {
         super(props, context);
 
-        this.sta
+        this.state = {
+            course: Object.assign({}, this.props.course),
+            errors: {},
+            saving: false,
+            savedCourse: false
+        };
 
         //bind updateCourseState to the components this
         this.updateCourseState = this.updateCourseState.bind(this);
@@ -30,6 +35,7 @@ export class ManageCoursePage extends React.PureComponent {
             //Neccessary to populate form when existing course is loaded directly (page refresh)
             this.setState({course: Object.assign({}, nextProps.course)});
         }
+
     }
 
 

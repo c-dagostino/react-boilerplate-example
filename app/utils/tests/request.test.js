@@ -10,6 +10,7 @@ describe('request', () => {
     window.fetch = jest.fn();
   });
 
+
   describe('stubbing successful response', () => {
     // Before each test, pretend we got a successful response
     beforeEach(() => {

@@ -10,13 +10,6 @@ import {makeSelectCourses, makeSelectLoading, makeSelectAuthors} from 'container
 import LoadingIndicator from '../../components/LoadingIndicator/index';
 import * as courseActions from '../App/actions';
 
-//The five major items of a Container component
-//1. Constructor - initialize state and call bind functions
-//2. Child functions that are called by Render
-//3. Render functon - Normall just calling child components
-//4. Proptypes - for proptype validation
-//5. Redux Connect and related functions
-
 
 class CoursesPage extends React.PureComponent {
     constructor(props, context) {

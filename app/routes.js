@@ -39,6 +39,16 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+          path: '/callback',
+          name: 'callback',
+          getComponent(nextState, cb) {
+              import
+              ('containers/callback')
+                  .then(loadModule(cb))
+                  .catch(errorLoading);
+          },
+      },
+      {
           path: '/features',
           name: 'features',
           getComponent(nextState, cb) {

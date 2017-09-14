@@ -3,11 +3,12 @@
  * If we were to do this in store.js, reducers wouldn't be hot reloadable.
  */
 
-import { fromJS } from 'immutable';
-import { combineReducers } from 'redux-immutable';
-import { LOCATION_CHANGE } from 'react-router-redux';
-import { Reducers as gridReducers } from 'react-redux-grid';
+import {fromJS} from 'immutable';
+import {combineReducers} from 'redux-immutable';
+import {LOCATION_CHANGE} from 'react-router-redux';
+import {Reducers as gridReducers} from 'react-redux-grid';
 import globalReducer from 'containers/App/reducer';
+import oidcReducer from 'containers/App/oidcReducer';
 import languageProviderReducer from 'containers/LanguageProvider/reducer';
 
 /*
@@ -20,34 +21,35 @@ import languageProviderReducer from 'containers/LanguageProvider/reducer';
 
 // Initial routing state
 const routeInitialState = fromJS({
-  locationBeforeTransitions: null,
+    locationBeforeTransitions: null,
 });
 
 /**
  * Merge route into the global application state
  */
 function routeReducer(state = routeInitialState, action) {
-  switch (action.type) {
-    /* istanbul ignore next */
-    case LOCATION_CHANGE:
-      return state.merge({
-        locationBeforeTransitions: action.payload,
-      });
-    default:
-      return state;
-  }
+    switch (action.type) {
+        /* istanbul ignore next */
+        case LOCATION_CHANGE:
+            return state.merge({
+                locationBeforeTransitions: action.payload,
+            });
+        default:
+            return state;
+    }
 }
 
 /**
  * Creates the main reducer with the asynchronously loaded ones
  */
 export default function createReducer(asyncReducers) {
-  return combineReducers({
-    ...gridReducers,
-    route: routeReducer,
-    global: globalReducer,
-    language: languageProviderReducer,
-    ...asyncReducers,
+    return combineReducers({
+        ...gridReducers,
+        route: routeReducer,
+        oidc: oidcReducer,
+        global: globalReducer,
+        language: languageProviderReducer,
+        ...asyncReducers,
 
-  });
+    });
 }

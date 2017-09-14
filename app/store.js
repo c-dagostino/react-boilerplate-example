@@ -3,14 +3,14 @@
  */
 
 import {createStore, applyMiddleware, compose} from 'redux';
+import createOidcMiddleware, { createUserManager, loadUser } from 'redux-oidc';
 import {fromJS} from 'immutable';
 import {routerMiddleware} from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 import createReducer from './reducers';
-import {getCourses, getAuthors} from './containers/CoursePage/sagas';
 import thunk from 'redux-thunk';
-
-
+import userManager from './utils/userManager';
+import {getCourses, getAuthors} from './containers/CoursePage/sagas';
 const sagaMiddleware = createSagaMiddleware();
 
 export default function
@@ -18,6 +18,9 @@ export default function
     // Create the store with two middlewares
     // 1. sagaMiddleware: Makes redux-sagas.js work
     // 2. routerMiddleware: Syncs the location/URL path to the state
+
+
+
     const middlewares = [
         thunk,
         sagaMiddleware,
@@ -41,12 +44,16 @@ export default function
     const store = createStore(
         createReducer(),
         fromJS(initialState),
-        composeEnhancers(...enhancers)
+        composeEnhancers(...enhancers),
+        //applyMiddleware(oidcMiddleware)
     );
+
+    loadUser(store, userManager);
 
     // Extensions
     store.runSaga = sagaMiddleware.run;
     store.asyncReducers = {}; // Async reducer registry
+
 
     // Make reducers hot reloadable, see http://mxs.is/googmo
     /* istanbul ignore next */
@@ -62,8 +69,9 @@ export default function
         });
     }
 
-    sagaMiddleware.run(getAuthors);
-    sagaMiddleware.run(getCourses);
+
+     sagaMiddleware.run(getAuthors);
+     sagaMiddleware.run(getCourses);
 
 
     return store;

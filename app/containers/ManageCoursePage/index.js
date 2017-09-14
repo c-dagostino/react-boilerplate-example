@@ -105,7 +105,7 @@ ManageCoursePage.propTypes = {
         React.PropTypes.array,
         React.PropTypes.bool,
     ]),
-    loadAuthors: React.PropTypes.func
+
 };
 
 //Pull in the React Router context so router is available on this.context.router

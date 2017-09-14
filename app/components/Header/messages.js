@@ -20,10 +20,10 @@ export default defineMessages({
     },
     coursesGrid: {
         id: 'boilerplate.components.Header.CoursesGrid',
-        defaultMessage: 'Courses Client Paging',
+        defaultMessage: 'Client Paging',
     },
     customPager: {
         id: 'boilerplate.components.Header.CustomPager',
-        defaultMessage: 'Courses Remote Paging',
+        defaultMessage: 'Remote Paging',
     },
 });

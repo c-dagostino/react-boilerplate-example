@@ -71,7 +71,7 @@ export default function
 
 
      sagaMiddleware.run(getAuthors);
-     sagaMiddleware.run(getCourses);
+     // sagaMiddleware.run(getCourses);
 
 
     return store;

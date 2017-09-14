@@ -1,6 +1,6 @@
 import 'whatwg-fetch';
 import {browserHistory} from 'react-router';
-//import configureStore from '../store';
+
 
 /**
  * Parses the JSON returned by a network request
@@ -38,18 +38,6 @@ function checkStatus(response) {
  *
  * @return {object}           The response data
  */
-
-//reads the access_token from the redux state and passes it in its HTTP request
-// const store = configureStore(browserHistory)
-// const token = store.getState().oidc.user.access_token;
-// const headers = new Headers();
-// headers.append('Accept', 'application/json');
-// headers.append('Authorization', `Bearer ${token}`);
-//
-// const options = {
-//     method,
-//     headers
-// };
 
 export default function request(url, options) {
     return fetch(url, options)

@@ -21,6 +21,7 @@ class CoursesPage extends React.PureComponent {
     componentDidMount()
     {
         this.props.actions.loadCourses();
+
     }
 
     courseRow(course, index) {
@@ -88,21 +89,20 @@ CoursesPage.propTypes = {
 
 
 function mergeAuthorNameIntoCourses(courses, authors) {
-
-    return courses.map(course => {
-        const author = authors.filter(author => author.id == course.authorId)[0];
-        return {
-            id: course.id,
-            watchHref: course.watchHref,
-            title: course.title,
-            authorId: course.authorId,
-            authorName: author.firstName + ' ' + author.lastName,
-            length: course.length,
-            category: course.category
-    };
-    });
-
-
+    if (courses && authors) {
+        return courses.map(course => {
+            const author = authors.filter(author => author.id == course.authorId)[0];
+            return {
+                id: course.id,
+                watchHref: course.watchHref,
+                title: course.title,
+                authorId: course.authorId,
+                authorName: author.firstName + ' ' + author.lastName,
+                length: course.length,
+                category: course.category
+            };
+        });
+    }
 }
 
 function mapStateToProps(state, ownProps) {

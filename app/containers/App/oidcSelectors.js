@@ -14,7 +14,12 @@ const makeSelectUser = () => createSelector(
     (oidcState) => oidcState.get('user')
 );
 
+const currentUser = (state) => state.getIn(['oidc','user']);
+
 export {
     selectOidc,
+    currentUser,
     makeSelectUser
 };
+
+

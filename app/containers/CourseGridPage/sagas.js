@@ -4,10 +4,11 @@ import { repoLoadingError, loadCourses } from '../App/actions';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import {browserHistory} from 'react-router';
 import request from '../../utils/request';
+import secureRequest from '../../utils/secureRequest';
 import post from '../../utils/post';
 import deleteRequest from '../../utils/delete';
 import {fromJS} from 'immutable';
-
+import * as selectors from '../App/oidcSelectors'
 
 
 export function* deleteCourseRequest(action) {
@@ -29,7 +30,8 @@ export function* getAuthors() {
     const requestURL = 'http://localhost:8080/authors';
 
     try {
-        const authors = yield call(request, requestURL);
+        let user = yield select(selectors.currentUser);
+        const authors = yield call(secureRequest, requestURL, user);
         // Instructing middleware to dispatch corresponding action.
         yield put({
             type: LOAD_AUTHORS_SUCCESS,
@@ -45,7 +47,9 @@ export function* getCourses() {
 
     try {
 
-        const courses = yield call(request, requestURL);
+        let user = yield select(selectors.currentUser);
+
+        const courses = yield call(secureRequest, requestURL, user);
 
         // Instructing middleware to dispatch corresponding action.
 

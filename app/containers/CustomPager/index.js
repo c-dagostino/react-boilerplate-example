@@ -15,11 +15,6 @@ class ExampleGridContainer extends React.PureComponent {
     }
 
 
-    componentDidMount() {
-
-    }
-
-
 
     render() {
 
